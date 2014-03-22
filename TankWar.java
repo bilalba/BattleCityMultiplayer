@@ -15,58 +15,77 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
  import java.util.Random;
+ import java.rmi.*;
 
  import java.util.ArrayList;
 
-public class TankWar extends Application {
-	
-	// This is the class to execute the game
+public class TankWar extends Application implements Transfer {
+  
+  // This is the class to execute the game
   Timeline timeline;
   int count = 0;
   
+  public int initiate() {
+    return 0;
+  }
+  public ArrayList<ImageView> getStatics() throws RemoteException {
+    return Data.getData().staticIv;
+  }
+
+  public ArrayList<ImageView> getMovables() throws RemoteException {
+    return Data.getData().movableIv;
+  }
+
   public int count() {
     return count ++;
   }
 
-	public void start(Stage stage){
-		final Group root = new Group();
-		final Scene scene = new Scene(root, 520, 520);
-		 scene.setFill(Color.BLACK);
-		stage.setTitle("Battle City!");
-		stage.setScene(scene);
-      	stage.show();
-      	
-      	
+  public void start(Stage stage){
+    final Group root = new Group();
+    final Scene scene = new Scene(root, 520, 520);
+     scene.setFill(Color.BLACK);
+    stage.setTitle("Battle City!");
+    stage.setScene(scene);
+        stage.show();
+        
+        
        
 
         BasicBlock[][] maps = Data.getData().map;
-      	for (int row = 0; row < 13; row++) { // ADD TO ROOT.
-      		for (int col = 0; col < 13; col++) {
-      			root.getChildren().add(maps[row][col].iv);
-      		}
-      	}
+        ArrayList<ImageView> siv = Data.getData().staticIv;
+        ArrayList<ImageView> miv = Data.getData().movableIv;
+        for (int row = 0; row < 13; row++) { // ADD TO ROOT.
+          for (int col = 0; col < 13; col++) {
+            root.getChildren().add(maps[row][col].iv);
+            siv.add(maps[row][col].iv); // Transferable.
+          }
+        }
 
         // DEFINING THE PLAYERS
-      	
-      	Player player = Data.getData().player;
+        
+        Player player = Data.getData().player;
         root.getChildren().add(player.iv);
+        miv.add(player.iv); // Transferable.
         root.getChildren().add(player.missile.iv);
-      	stage.addEventHandler(KeyEvent.KEY_PRESSED, player);
+        miv.add(player.missile.iv); // Transferable.
+        stage.addEventHandler(KeyEvent.KEY_PRESSED, player);
         root.getChildren().add(Data.getData().powerup.iv);
-
+        miv.add(Data.getData().powerup.iv); // Transferable.
         // ------------- END.
 
         // DEFINING ENEMIES ---------------
         ArrayList<Enemy> enem = Data.getData().enem;
         for (int tv = 0; tv < enem.size(); tv++){
           root.getChildren().add(enem.get(tv).iv);
+          miv.add(enem.get(tv).iv); // Transferable.
           root.getChildren().add(enem.get(tv).missile.iv);
+          miv.add(enem.get(tv).missile.iv); // Transferable.
         }
-      	final Duration oneFrameAmt = Duration.millis(1500/60);
-      	final KeyFrame oneFrame = new KeyFrame(oneFrameAmt, // MAIN HANDLE.
+        final Duration oneFrameAmt = Duration.millis(1500/60);
+        final KeyFrame oneFrame = new KeyFrame(oneFrameAmt, // MAIN HANDLE.
         new EventHandler<ActionEvent>() {
 
-        	public void handle(ActionEvent event) {
+          public void handle(ActionEvent event) {
 
             if (player.helmet) {
               if (player.h_count >= 700) { // CHANGE HELMET.
@@ -85,7 +104,9 @@ public class TankWar extends Application {
               ArrayList<Enemy> enem1 = Data.getData().enem;
               enem1.add(xy);
               root.getChildren().add(enem1.get(enem1.size()-1).iv);
-          root.getChildren().add(enem1.get(enem1.size()-1).missile.iv);
+              miv.add(enem1.get(enem1.size()-1).iv); // Transferable.
+              root.getChildren().add(enem1.get(enem1.size()-1).missile.iv);
+              miv.add(enem1.get(enem1.size()-1).missile.iv); // Transferable.
             }
             player.doAction();
             
@@ -126,13 +147,13 @@ public class TankWar extends Application {
 
 
 
-	}
+  }
 
 
-	public static void main(String[] args) {
-		
-		Application.launch(args); //to launch the startMethod
+  public static void main(String[] args) {
+    
+    Application.launch(args); //to launch the startMethod
 
-	}
+  }
 
 }

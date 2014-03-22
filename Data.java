@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 public class Data {
   public Powerup powerup;
+  public ArrayList<ImageView> staticIv;
+  public ArrayList<ImageView> movableIv;
 	public BasicBlock[][] map;
 	public ArrayList<Enemy> enem;
 	public Player player;
@@ -122,6 +124,8 @@ public class Data {
         player = new Player(loc);
 
         enem = new ArrayList<Enemy>();
+        movableIv = new ArrayList<ImageView>();
+        staticIv = new ArrayList<ImageView>();
         Location loce = new Location(0,80);
         Enemy xy = new Enemy(loce);
         enem.add(xy);
