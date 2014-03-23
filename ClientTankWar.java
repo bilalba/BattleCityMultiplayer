@@ -134,6 +134,28 @@ ImageView powerup = new ImageView();
 	timeline = new Timeline(oneFrame);
        timeline.setCycleCount(Timeline.INDEFINITE);
        timeline.play();
+
+       EventHandler move = new EventHandler<KeyEvent>() {
+           public void handle(KeyEvent event) {
+              if(event.getCode() == KeyCode.W)
+              {
+                // circ.setCenterY(circ.getCenterY()-5);
+              } else if(event.getCode() == KeyCode.S)
+              {
+                // circ.setCenterY(circ.getCenterY()+5);
+              } else if(event.getCode() == KeyCode.A)
+              {
+                // circ.setCenterX(circ.getCenterX()-5);
+              } else if(event.getCode() == KeyCode.D)
+              {
+                // circ.setCenterX(circ.getCenterX()+5);
+              } else {
+                
+                System.out.println("Invalid Key");
+              }
+           }
+        };
+        stage.getScene().setOnKeyPressed(move);
 }
 	public static void main(String[] args) throws Exception{
        	
