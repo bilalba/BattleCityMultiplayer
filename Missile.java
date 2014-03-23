@@ -126,6 +126,8 @@ public class Missile extends BasicBlock {
 
 				iv.setX(-40);
      		    iv.setY(-40);
+     		    info.x = -40;
+     		    info.y = -40;
 			}
 			
 		}

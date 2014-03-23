@@ -18,6 +18,7 @@ import javafx.scene.image.ImageView;
 import java.util.ArrayList;
 
 public class ClientTankWar extends Application {
+	Timeline timeline;
 ArrayList<ImageView> bricks = new ArrayList<ImageView>();
 ArrayList<ImageView> players = new ArrayList<ImageView>();
 ArrayList<ImageView> players_miss = new ArrayList<ImageView>();
@@ -47,13 +48,15 @@ ImageView powerup = new ImageView();
 			bricks.add(new ImageView("bricks.png"));
 			bricks.get(bricks.size()-1).setX(dv.x);
 			bricks.get(bricks.size()-1).setY(dv.y);
-		}
-		if (dv.type == 17){
+		}else if (dv.type == 17){
 			bricks.add(new ImageView("steel.png"));
 			bricks.get(bricks.size()-1).setX(dv.x);
 			bricks.get(bricks.size()-1).setY(dv.y);
-		}
-		if (dv.type == 16){
+		}else if (dv.type == 16){
+			bricks.add(new ImageView("eagless.png"));
+			bricks.get(bricks.size()-1).setX(dv.x);
+			bricks.get(bricks.size()-1).setY(dv.y);
+		} else {
 			bricks.add(new ImageView("eagless.png"));
 			bricks.get(bricks.size()-1).setX(dv.x);
 			bricks.get(bricks.size()-1).setY(dv.y);
@@ -70,9 +73,23 @@ ImageView powerup = new ImageView();
 	final KeyFrame oneFrame = new KeyFrame(oneFrameAmt, // MAIN HANDLE.
 	new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent event) {
+			System.out.println('s');
+			ArrayList<ArrayList<Info>> a1 = new ArrayList<ArrayList<Info>>();
+			try {
+				a1 = transfer.getit();
+			} catch(Exception e) {}
+			ArrayList<Info> h= a1.get(0);
+			for (int i = 0; i < h.size(); i++){
+				bricks.get(i).setX(h.get(i).x);
+				bricks.get(i).setY(h.get(i).y);
+			}
 
 		}
 	});
+
+	timeline = new Timeline(oneFrame);
+       timeline.setCycleCount(Timeline.INDEFINITE);
+       timeline.play();
 }
 	public static void main(String[] args) throws Exception{
        	

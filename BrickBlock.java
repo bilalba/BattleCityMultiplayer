@@ -11,5 +11,7 @@ public class BrickBlock extends BasicBlock {
 		location.setLocation(-40,-40);
 		iv.setX(-40);
      	iv.setY(-40);
+     	info.x = -40;
+     	info.y = -40;
 	}
 }
