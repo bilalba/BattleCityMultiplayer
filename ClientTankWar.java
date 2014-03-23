@@ -18,10 +18,15 @@ import javafx.scene.image.ImageView;
 import java.util.ArrayList;
 
 public class ClientTankWar extends Application {
-
+ArrayList<ImageView> bricks = new ArrayList<ImageView>();
+ArrayList<ImageView> players = new ArrayList<ImageView>();
+ArrayList<ImageView> players_miss = new ArrayList<ImageView>();
+ArrayList<ImageView> enem = new ArrayList<ImageView>();
+ArrayList<ImageView> enem_miss = new ArrayList<ImageView>();
+ImageView powerup = new ImageView();
 
 	public void start(Stage stage) throws Exception{
-		System.out.println("Welcome to Bilal's chatroom.");
+		System.out.println("New1");
     	Registry registry = LocateRegistry.getRegistry();
 		Transfer transfer = (Transfer) registry.lookup("transfer");
 		transfer.initiate();
@@ -31,7 +36,23 @@ public class ClientTankWar extends Application {
 	stage.setTitle("Battle City!");
 	stage.setScene(scene);
 	stage.show();
-	ArrayList<Info> statics = transfer.getStatics();
+
+
+	ArrayList<ArrayList<Info>> all = transfer.getit();
+	
+
+	for (Info dv : all.get(0)) { // INITIALIZE.
+		System.out.println(dv.type);
+		if (dv.type == 15){
+			bricks.add(new ImageView("bricks.png"));
+			bricks.get(bricks.size()-1).setX(dv.x);
+			bricks.get(bricks.size()-1).setY(dv.y);
+		}
+	}
+
+	for (ImageView br : bricks)
+		root.getChildren().add(br);
+
 	// for (ImageView x :statics) { 
 	// 	root.getChildren().add(x);
 	// }

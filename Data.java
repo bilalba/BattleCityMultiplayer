@@ -42,11 +42,9 @@ public class Data {
 		map = new BasicBlock[13][13];
 		int rowVal = 0;
         for (int row = 0; row < 13; row++) { // Defining the array map EMPTY.
-          int colVal = 0;
-          for (int col = 0; col < 13; col++) {map[row][col] = new SpaceBlock(new Location(-40, -40), new Image("player_left.png"));
-                        colVal = colVal + 40;
+          for (int col = 0; col < 13; col++) {
+            map[row][col] = new SpaceBlock(new Location(-40, -40), new Image("player_left.png"));
           }
-          rowVal = rowVal + 40;
         }
 
    /* 
