@@ -48,6 +48,16 @@ ImageView powerup = new ImageView();
 			bricks.get(bricks.size()-1).setX(dv.x);
 			bricks.get(bricks.size()-1).setY(dv.y);
 		}
+		if (dv.type == 17){
+			bricks.add(new ImageView("steel.png"));
+			bricks.get(bricks.size()-1).setX(dv.x);
+			bricks.get(bricks.size()-1).setY(dv.y);
+		}
+		if (dv.type == 16){
+			bricks.add(new ImageView("eagless.png"));
+			bricks.get(bricks.size()-1).setX(dv.x);
+			bricks.get(bricks.size()-1).setY(dv.y);
+		}
 	}
 
 	for (ImageView br : bricks)
