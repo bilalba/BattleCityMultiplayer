@@ -137,22 +137,30 @@ ImageView powerup = new ImageView();
 
        EventHandler move = new EventHandler<KeyEvent>() {
            public void handle(KeyEvent event) {
+           		int s = 5;
               if(event.getCode() == KeyCode.W)
               {
+              	s = 1;
                 // circ.setCenterY(circ.getCenterY()-5);
               } else if(event.getCode() == KeyCode.S)
               {
+              	s = -1;
                 // circ.setCenterY(circ.getCenterY()+5);
               } else if(event.getCode() == KeyCode.A)
               {
+              	s = 0;
                 // circ.setCenterX(circ.getCenterX()-5);
               } else if(event.getCode() == KeyCode.D)
               {
+              	s = 2;
                 // circ.setCenterX(circ.getCenterX()+5);
               } else {
                 
                 System.out.println("Invalid Key");
               }
+              try {
+	                transfer.move2(s);
+	            } catch(Exception e) {}
            }
         };
         stage.getScene().setOnKeyPressed(move);

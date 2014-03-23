@@ -6,4 +6,5 @@ interface Transfer extends Remote{
 
 	int initiate() throws RemoteException;
 	public ArrayList<ArrayList<Info>> getit() throws RemoteException;
+	public void move2(int a) throws RemoteException;
 }

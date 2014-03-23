@@ -36,7 +36,14 @@ public class TankWar extends Application implements Transfer {
     return Data.getData().all;
   }
 
+  public void move2(int a) throws RemoteException {
+      Player player1 = Data.getData().player1;
+      player1.direction = a;
+      if (player1.movePossible()) {
+        player1.makeMove();
+      }
 
+  }
   public int count() {
     return count ++;
   }
