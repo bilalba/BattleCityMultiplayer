@@ -10,6 +10,7 @@ public class Missile extends BasicBlock {
 	public Missile(Location l, int typ) {
 		super(l, BasicBlock.BlockType.MISSILE);
 		m_type = typ;
+		info = new Info(l, typ+2, direction);
 		image = new Image("abc.png");
 		iv = new ImageView(image);
 		iv.setX(-40);
@@ -113,6 +114,7 @@ public class Missile extends BasicBlock {
 
 		iv.setX(location.getCol());
         iv.setY(location.getRow());
+        info.setinfol(location);
 	}
 	public void doAction(){
 		if (ml) {

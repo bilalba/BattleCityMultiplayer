@@ -6,6 +6,7 @@ public class BasicBlock {
 	Image image;
 	ImageView iv;
 	int type;
+	Info info;
 	public class BlockType {
 		static final int SPACE = 1;
 		static final int TANK = 2;

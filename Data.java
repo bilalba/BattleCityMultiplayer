@@ -5,8 +5,7 @@ import java.util.ArrayList;
 
 public class Data {
   public Powerup powerup;
-  public ArrayList<ImageView> staticIv;
-  public ArrayList<ImageView> movableIv;
+  ArrayList<ArrayList<Info>> all = new ArrayList<ArrayList<Info>>();
 	public BasicBlock[][] map;
 	public ArrayList<Enemy> enem;
 	public Player player;
@@ -124,8 +123,15 @@ public class Data {
         player = new Player(loc);
 
         enem = new ArrayList<Enemy>();
-        movableIv = new ArrayList<ImageView>();
-        staticIv = new ArrayList<ImageView>();
+
+
+        all.add(new ArrayList<Info>()); // bricks.
+        all.add(new ArrayList<Info>()); // player
+        all.add(new ArrayList<Info>()); // player.missile
+        all.add(new ArrayList<Info>()); // enemy
+        all.add(new ArrayList<Info>()); // enemy.missile
+        all.add(new ArrayList<Info>()); // powerup
+
         Location loce = new Location(0,80);
         Enemy xy = new Enemy(loce);
         enem.add(xy);

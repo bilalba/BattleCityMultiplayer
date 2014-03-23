@@ -15,7 +15,11 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
  import java.util.Random;
- import java.rmi.*;
+import java.net.*;
+import java.io.*;
+import java.rmi.*;
+import java.rmi.server.*;
+import java.rmi.registry.*;
 
  import java.util.ArrayList;
 
@@ -28,19 +32,20 @@ public class TankWar extends Application implements Transfer {
   public int initiate() {
     return 0;
   }
-  public ArrayList<ImageView> getStatics() throws RemoteException {
-    return Data.getData().staticIv;
+  public ArrayList<ArrayList<Info>> getit() throws RemoteException {
+    return Data.getData().all;
   }
 
-  public ArrayList<ImageView> getMovables() throws RemoteException {
-    return Data.getData().movableIv;
-  }
 
   public int count() {
     return count ++;
   }
 
-  public void start(Stage stage){
+  public void start(Stage stage) throws Exception{
+    Transfer transfer=(Transfer)UnicastRemoteObject.exportObject(this,0);
+    Registry registry=LocateRegistry.getRegistry();
+    registry.rebind("transfer",transfer);
+    System.out.println("Done");
     final Group root = new Group();
     final Scene scene = new Scene(root, 520, 520);
      scene.setFill(Color.BLACK);
@@ -52,12 +57,11 @@ public class TankWar extends Application implements Transfer {
        
 
         BasicBlock[][] maps = Data.getData().map;
-        ArrayList<ImageView> siv = Data.getData().staticIv;
-        ArrayList<ImageView> miv = Data.getData().movableIv;
+        ArrayList<Info> siv = Data.getData().all.get(0);
         for (int row = 0; row < 13; row++) { // ADD TO ROOT.
           for (int col = 0; col < 13; col++) {
             root.getChildren().add(maps[row][col].iv);
-            siv.add(maps[row][col].iv); // Transferable.
+            siv.add(maps[row][col].info); // Transferable.
           }
         }
 
@@ -65,21 +69,21 @@ public class TankWar extends Application implements Transfer {
         
         Player player = Data.getData().player;
         root.getChildren().add(player.iv);
-        miv.add(player.iv); // Transferable.
+        Data.getData().all.get(1).add(player.info); // Transferable.
         root.getChildren().add(player.missile.iv);
-        miv.add(player.missile.iv); // Transferable.
+        Data.getData().all.get(2).add(player.missile.info); // Transferable.
         stage.addEventHandler(KeyEvent.KEY_PRESSED, player);
         root.getChildren().add(Data.getData().powerup.iv);
-        miv.add(Data.getData().powerup.iv); // Transferable.
+        Data.getData().all.get(5).add(Data.getData().powerup.info); // Transferable.
         // ------------- END.
 
         // DEFINING ENEMIES ---------------
         ArrayList<Enemy> enem = Data.getData().enem;
         for (int tv = 0; tv < enem.size(); tv++){
           root.getChildren().add(enem.get(tv).iv);
-          miv.add(enem.get(tv).iv); // Transferable.
+          Data.getData().all.get(3).add(enem.get(tv).info); // Transferable.
           root.getChildren().add(enem.get(tv).missile.iv);
-          miv.add(enem.get(tv).missile.iv); // Transferable.
+          Data.getData().all.get(4).add(enem.get(tv).missile.info);; // Transferable.
         }
         final Duration oneFrameAmt = Duration.millis(1500/60);
         final KeyFrame oneFrame = new KeyFrame(oneFrameAmt, // MAIN HANDLE.
@@ -104,9 +108,9 @@ public class TankWar extends Application implements Transfer {
               ArrayList<Enemy> enem1 = Data.getData().enem;
               enem1.add(xy);
               root.getChildren().add(enem1.get(enem1.size()-1).iv);
-              miv.add(enem1.get(enem1.size()-1).iv); // Transferable.
+              Data.getData().all.get(3).add(enem1.get(enem1.size()-1).info); // Transferable.
               root.getChildren().add(enem1.get(enem1.size()-1).missile.iv);
-              miv.add(enem1.get(enem1.size()-1).missile.iv); // Transferable.
+              Data.getData().all.get(4).add(enem1.get(enem1.size()-1).missile.info); // Transferable.
             }
             player.doAction();
             
