@@ -50,6 +50,7 @@ public class Enemy extends Tank {
     }
               if (direction != prevdir) { // PLAYER CHANGE DIRECTION
               iv.setRotate((direction) * 90);
+              info.dir = direction;
               prevdir = direction;
             }
             

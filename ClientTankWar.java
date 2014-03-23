@@ -23,6 +23,12 @@ ArrayList<ImageView> bricks = new ArrayList<ImageView>();
 ArrayList<ImageView> players = new ArrayList<ImageView>();
 ArrayList<ImageView> players_miss = new ArrayList<ImageView>();
 ArrayList<ImageView> enem = new ArrayList<ImageView>();
+public ArrayList<ImageView> getenem() {
+	return enem;
+}
+public void setenem(ArrayList<ImageView> a) {
+	enem = a;
+}
 ArrayList<ImageView> enem_miss = new ArrayList<ImageView>();
 ImageView powerup = new ImageView();
 
@@ -66,6 +72,20 @@ ImageView powerup = new ImageView();
 	for (ImageView br : bricks)
 		root.getChildren().add(br);
 
+
+	for (Info dv : all.get(3)) {
+		enem.add(new ImageView("enemy_left.png"));
+		ImageView fr = enem.get(enem.size()-1);
+		fr.setX(dv.x);
+		fr.setY(dv.y);
+		fr.setFitHeight(30);
+		fr.setFitWidth(30);
+
+	}
+
+	for (ImageView br : enem)
+		root.getChildren().add(br);
+
 	// for (ImageView x :statics) { 
 	// 	root.getChildren().add(x);
 	// }
@@ -73,16 +93,40 @@ ImageView powerup = new ImageView();
 	final KeyFrame oneFrame = new KeyFrame(oneFrameAmt, // MAIN HANDLE.
 	new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent event) {
-			System.out.println('s');
+			// System.out.println('s');
 			ArrayList<ArrayList<Info>> a1 = new ArrayList<ArrayList<Info>>();
 			try {
 				a1 = transfer.getit();
 			} catch(Exception e) {}
-			ArrayList<Info> h= a1.get(0);
-			for (int i = 0; i < h.size(); i++){
-				bricks.get(i).setX(h.get(i).x);
-				bricks.get(i).setY(h.get(i).y);
+
+
+			ArrayList<Info> h= a1.get(0); // UPDATING STATIC OBJECTS.
+			for (int i = 0; i < h.size(); i++){ // Here
+				bricks.get(i).setX(h.get(i).x); // here
+				bricks.get(i).setY(h.get(i).y); // here
+			} // here
+
+			ArrayList<Info> e = a1.get(3); // ENEMIES.
+			if (e.size() > enem.size()) { // ADD ADDITIONAL ENEMIES CODE.
+				for (int i = enem.size(); i < e.size(); i++) {
+					enem.add(new ImageView("enemy_left.png"));
+					ImageView fr = enem.get(i);
+					fr.setX(e.get(i).x);
+					fr.setY(e.get(i).y);
+					fr.setFitHeight(30);
+    				fr.setFitWidth(30);
+					root.getChildren().add(fr);
+				}
 			}
+			for (int i = 0; i < e.size(); i++){ // Here
+				ImageView fr = enem.get(i);
+				Info er = e.get(i);
+				fr.setX(er.x); // here
+				fr.setY(er.y); // here
+				fr.setRotate((er.dir) * 90);
+			}			
+
+
 
 		}
 	});
