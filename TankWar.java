@@ -25,6 +25,7 @@ import javafx.scene.text.Font;
  import java.util.ArrayList;
  import javafx.scene.paint.Paint;
 import javafx.scene.control.*;
+import javafx.animation.PauseTransition;
 public class TankWar extends Application implements Transfer {
     Timeline timeline;
     Transfer transfer;
@@ -32,11 +33,13 @@ public class TankWar extends Application implements Transfer {
     ArrayList<ImageView> players = new ArrayList<ImageView>();
     ArrayList<ImageView> players_miss = new ArrayList<ImageView>();
     ArrayList<ImageView> enem = new ArrayList<ImageView>();
+    ArrayList<ImageView> enem_miss = new ArrayList<ImageView>();
     int count = 0;
     int started = 0;
 
      public int initiate() {
     started = 1;
+    timeline.play();
     return 0;
   }
   public ArrayList<ArrayList<Info>> getit() throws RemoteException {
@@ -58,6 +61,7 @@ public class TankWar extends Application implements Transfer {
 
     @Override
     public void start(Stage stage) {
+      new SoundThread();
         TankWar fd = this;
         final Group root = new Group();
     final Scene scene = new Scene(root, 520, 520);
@@ -75,6 +79,7 @@ public class TankWar extends Application implements Transfer {
 
 
         Button button2 = new Button("GO SOLO!");
+        button2.relocate(200, 50);
         button2.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 // label.setText("GO SOLO!");
@@ -91,15 +96,7 @@ public class TankWar extends Application implements Transfer {
         t.setFill(Color.WHITE);
         t.setFont(new Font(10));
         t.setText("SCORE");
-
         
-
-
-        new SoundThread();
-        
-        
-       
-
         BasicBlock[][] maps = Data.getData().map;
         
         for (int row = 0; row < 13; row++) { // ADD TO ROOT.
@@ -145,17 +142,17 @@ public class TankWar extends Application implements Transfer {
               player.h_count++;
             }
 
-            // if (count()%300 == 0 && Data.getData().powerup.on == false) {
-            //   System.out.println("NOW EXECUTE");
-            //   Location loce = new Location(80,240);
-            //   Enemy xy = new Enemy(loce);
-            //   ArrayList<Enemy> enem1 = Data.getData().enem;
-            //   enem1.add(xy);
-            //   root.getChildren().add(enem1.get(enem1.size()-1).iv);
-            //   Data.getData().all.get(3).add(enem1.get(enem1.size()-1).info); // Transferable.
-            //   root.getChildren().add(enem1.get(enem1.size()-1).missile.iv);
-            //   Data.getData().all.get(4).add(enem1.get(enem1.size()-1).missile.info); // Transferable.
-            // }
+            if (count()%300 == 0 && Data.getData().powerup.on == false) {
+              System.out.println("NOW EXECUTE");
+              Location loce = new Location(80,240);
+              Enemy xy = new Enemy(loce);
+              ArrayList<Enemy> enem1 = Data.getData().enem;
+              enem1.add(xy);
+              root.getChildren().add(enem1.get(enem1.size()-1).iv);
+              Data.getData().all.get(3).add(enem1.get(enem1.size()-1).info); // Transferable.
+              root.getChildren().add(enem1.get(enem1.size()-1).missile.iv);
+              Data.getData().all.get(4).add(enem1.get(enem1.size()-1).missile.info); // Transferable.
+            }
             player.doAction();
             
             if (Data.getData().timefreeze(0) != 0) {
@@ -177,11 +174,11 @@ public class TankWar extends Application implements Transfer {
                  if (Data.getData().speedy > 1000)
                 Data.getData().speedy = 0;
             }
-          // if (Data.getData().player.killed || Data.getData().eagle.killed) { // STOPP.
-          //   root.getChildren().add(new ImageView(new Image("gameover.png")));
-          //   System.out.println("GAMEOVER");
-          //     timeline.stop();
-          //  }
+          if (Data.getData().player.killed || Data.getData().eagle.killed) { // STOPP.
+            root.getChildren().add(new ImageView(new Image("gameover.png")));
+            System.out.println("GAMEOVER");
+              timeline.stop();
+           }
            if (count() > 200000) { // STOPP yo!!
             root.getChildren().add(new ImageView(new Image("winner.png")));
             System.out.println("GAMEOVER");
@@ -201,7 +198,7 @@ public class TankWar extends Application implements Transfer {
             }
         });
         Button button3 = new Button("Start a new game!");
-        button3.relocate(250,250);
+        button3.relocate(180,100);
         button3.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                   // label.setText("GO SOLO!");
@@ -213,6 +210,9 @@ public class TankWar extends Application implements Transfer {
     }
                             catch (Exception e1) {}
     System.out.println("Done");
+
+    
+
     final Group root = new Group();
     final Scene scene = new Scene(root, 520, 520);
      scene.setFill(Color.BLACK);
@@ -225,15 +225,7 @@ public class TankWar extends Application implements Transfer {
         t.setFill(Color.WHITE);
         t.setFont(new Font(10));
         t.setText("SCORE");
-
         
-
-
-        new SoundThread();
-        
-        
-       
-
         BasicBlock[][] maps = Data.getData().map;
         ArrayList<Info> siv = Data.getData().all.get(0);
         for (int row = 0; row < 13; row++) { // ADD TO ROOT.
@@ -270,11 +262,23 @@ public class TankWar extends Application implements Transfer {
 
         root.getChildren().add(Data.getData().player1.iv);
         root.getChildren().add(t);
+        Text t1 = new Text(100, 100, "WAITING...");
+            t1.setFill(Color.WHITE);
+             t1.setFont(new Font(30));
+             t1.setText("WAITING FOR THE OTHER PLAYER..");
+             root.getChildren().add(t1);
         final Duration oneFrameAmt = Duration.millis(1500/60);
         final KeyFrame oneFrame = new KeyFrame(oneFrameAmt, // MAIN HANDLE.
         new EventHandler<ActionEvent>() {
 
           public void handle(ActionEvent event) {
+            if (started != 1){
+              t1.relocate(50,50);
+              timeline.pause();
+            } else {
+              t1.relocate(-50,-50);
+            }
+            // t1.relocate(-100,-100);
             // player1.iv.setX(player1.iv.getX());
 
 
@@ -290,17 +294,17 @@ public class TankWar extends Application implements Transfer {
               player.h_count++;
             }
 
-            // if (count()%300 == 0 && Data.getData().powerup.on == false) {
-            //   System.out.println("NOW EXECUTE");
-            //   Location loce = new Location(80,240);
-            //   Enemy xy = new Enemy(loce);
-            //   ArrayList<Enemy> enem1 = Data.getData().enem;
-            //   enem1.add(xy);
-            //   root.getChildren().add(enem1.get(enem1.size()-1).iv);
-            //   Data.getData().all.get(3).add(enem1.get(enem1.size()-1).info); // Transferable.
-            //   root.getChildren().add(enem1.get(enem1.size()-1).missile.iv);
-            //   Data.getData().all.get(4).add(enem1.get(enem1.size()-1).missile.info); // Transferable.
-            // }
+            if (count()%300 == 0 && Data.getData().powerup.on == false) {
+              System.out.println("NOW EXECUTE");
+              Location loce = new Location(80,240);
+              Enemy xy = new Enemy(loce);
+              ArrayList<Enemy> enem1 = Data.getData().enem;
+              enem1.add(xy);
+              root.getChildren().add(enem1.get(enem1.size()-1).iv);
+              Data.getData().all.get(3).add(enem1.get(enem1.size()-1).info); // Transferable.
+              root.getChildren().add(enem1.get(enem1.size()-1).missile.iv);
+              Data.getData().all.get(4).add(enem1.get(enem1.size()-1).missile.info); // Transferable.
+            }
             player.doAction();
             player1.doAction();
             
@@ -323,11 +327,11 @@ public class TankWar extends Application implements Transfer {
                  if (Data.getData().speedy > 1000)
                 Data.getData().speedy = 0;
             }
-          // if (Data.getData().player.killed || Data.getData().eagle.killed) { // STOPP.
-          //   root.getChildren().add(new ImageView(new Image("gameover.png")));
-          //   System.out.println("GAMEOVER");
-          //     timeline.stop();
-          //  }
+          if (Data.getData().player.killed || Data.getData().eagle.killed) { // STOPP.
+            root.getChildren().add(new ImageView(new Image("gameover.png")));
+            System.out.println("GAMEOVER");
+              timeline.stop();
+           }
            if (count() > 200000) { // STOPP yo!!
             root.getChildren().add(new ImageView(new Image("winner.png")));
             System.out.println("GAMEOVER");
@@ -347,14 +351,16 @@ public class TankWar extends Application implements Transfer {
                  // label.setText("Start a game!");
             }
         });
-
+        TextField ip1 = new TextField();
+        ip1.relocate(150, 180);
+        ip1.setPromptText("Enter ip/localhost");
         Button button4 = new Button("Join a already running game!");
-                button4.relocate(50,50);
+                button4.relocate(150,200);
         button4.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) { 
               try {
                               Registry registry = LocateRegistry.getRegistry();
-                              transfer = (Transfer) registry.lookup("rmi://" + "localhost" + "/transfer");
+                              transfer = (Transfer) registry.lookup("rmi://" + ip1.getText() + "/transfer");
                               transfer.initiate();
                                } catch (Exception e1) {}
                                System.out.println("New1");
@@ -404,6 +410,15 @@ public class TankWar extends Application implements Transfer {
 
                 }
 
+                for (Info dv : all.get(4)) {
+                    enem_miss.add(new ImageView("abc.png"));
+                    ImageView fr = enem_miss.get(enem_miss.size()-1);
+                    fr.setX(dv.x);
+                    fr.setY(dv.y);
+                    fr.setFitHeight(5);
+                    fr.setFitWidth(5);
+                }
+
                 for (Info dv : all.get(1)) {
                     players.add(new ImageView("player_left.png"));
                     ImageView fr = players.get(players.size()-1);
@@ -414,9 +429,21 @@ public class TankWar extends Application implements Transfer {
                     root.getChildren().add(fr);
                 }
 
+                for (Info dv : all.get(2)) {
+                    players_miss.add(new ImageView("abc.png"));
+                    ImageView fr = players_miss.get(players_miss.size()-1);
+                    fr.setX(dv.x);
+                    fr.setY(dv.y);
+                    fr.setFitHeight(5);
+                    fr.setFitWidth(5);
+                    root.getChildren().add(fr);
+                }
+
                 for (ImageView br : enem)
                     root.getChildren().add(br);
 
+                for (ImageView br : enem_miss)
+                    root.getChildren().add(br);
                 // for (ImageView x :statics) { 
                 //  root.getChildren().add(x);
                 // }
@@ -457,6 +484,25 @@ public class TankWar extends Application implements Transfer {
                             fr.setRotate((er.dir) * 90);
                         }
 
+                        ArrayList<Info> e4 = a1.get(4); // ENEMIES MISSILE
+                        if (e4.size() > enem_miss.size()) { // ADD ADDITIONAL ENEMIES CODE.
+                            for (int i = enem_miss.size(); i < e4.size(); i++) {
+                                enem_miss.add(new ImageView("enemy_left.png"));
+                                ImageView fr = enem_miss.get(i);
+                                fr.setX(e4.get(i).x);
+                                fr.setY(e4.get(i).y);
+                                fr.setFitHeight(5);
+                                fr.setFitWidth(5);
+                                root.getChildren().add(fr);
+                            }
+                        }
+                        for (int i = 0; i < e4.size(); i++){ // Here
+                            ImageView fr = enem_miss.get(i);
+                            Info er = e4.get(i);
+                            fr.setX(er.x); // here
+                            fr.setY(er.y); // here
+                        }
+
                         ArrayList<Info> p = a1.get(1);
 
                         for (int i = 0; i < 2; i++){ // Here
@@ -466,6 +512,15 @@ public class TankWar extends Application implements Transfer {
                             fr.setY(er.y); // here
                             fr.setRotate((er.dir) * 90);
                         }   
+
+                        ArrayList<Info> p2 = a1.get(2);
+
+                        for (int i = 0; i < 2; i++){ // Here
+                            ImageView fr = players_miss.get(i);
+                            Info er = p2.get(i);
+                            fr.setX(er.x); // here
+                            fr.setY(er.y); // here
+                        }
 
 
 
@@ -515,6 +570,7 @@ public class TankWar extends Application implements Transfer {
         root.getChildren().add(button2);
         root.getChildren().add(button3);
         root.getChildren().add(button4);
+        root.getChildren().add(ip1);
 
 
   

@@ -36,7 +36,6 @@ public class Player extends Tank implements EventHandler<KeyEvent> {
   public void doAction() {
     iv.setX(location.getCol());
     iv.setY(location.getRow());
-    dele = 0;
     if (dele > 0){
       if (dele < 3) {
         iv.setImage(new Image("2.png"));
@@ -131,7 +130,7 @@ public class Player extends Tank implements EventHandler<KeyEvent> {
               } else {
                 System.out.println("Unused key :" + event.getCode());
               }
-
+              info.dir = direction;
               if (direction != prevdir) { // PLAYER CHANGE DIRECTION
               iv.setRotate((direction) * 90);
               prevdir = direction;

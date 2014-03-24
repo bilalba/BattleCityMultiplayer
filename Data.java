@@ -49,72 +49,104 @@ public class Data {
             map[row][col] = new SpaceBlock(new Location(-40, -40), new Image("player_left.png"));
           }
         }
+        Random rand1 = new Random();
+        int fet = rand1.nextInt(3) + 1;
 
-   /* 
-          HARDCODING THE WALLS.
-          */
+        if (fet == 1) {
         
-        for (int row = 1; row < 5; row ++){
-          for (int col = 1; col < 5; col = col + 2) {
-            map[row][col] = new BrickBlock(new Location(row*40, col*40), new Image("bricks.png"));
-          }
-        }
-
-        for (int row = 1; row < 5; row ++){
-          for (int col = 9; col < 13; col = col + 2) {
-            map[row][col] = new BrickBlock(new Location(row*40, col*40), new Image("bricks.png"));
-          }
-        }
-
-        for (int row = 9; row < 12; row ++){
-          for (int col = 1; col < 5; col = col + 2) {
-            map[row][col] = new BrickBlock(new Location(row*40, col*40), new Image("bricks.png"));
-          }
-        }
-
-        for (int row = 9; row < 12; row ++){
-          for (int col = 9; col < 13; col = col + 2) {
-            map[row][col] = new BrickBlock(new Location(row*40, col*40), new Image("bricks.png"));
-          }
-        }
-
-        for (int row = 1; row < 4; row ++){
-          for (int col = 5; col < 9; col = col + 2) {
-            map[row][col] = new BrickBlock(new Location(row*40, col*40), new Image("bricks.png"));
-          }
-        }
-
-        for (int col = 2; col < 11; col++) {
-            int row = 6;
-            if (col < 4 || col > 8)
-            map[row][col] = new BrickBlock(new Location(row*40, col*40), new Image("bricks.png"));
-        }
-        map[5][5] = new BrickBlock(new Location(5*40, 5*40), new Image("bricks.png"));
-        map[5][7] = new BrickBlock(new Location(5*40, 7*40), new Image("bricks.png"));
-        map[11][6] = new BrickBlock(new Location(11*40, 6*40), new Image("bricks.png"));
-        map[11][5] = new BrickBlock(new Location(11*40, 5*40), new Image("bricks.png"));
-        map[11][7] = new BrickBlock(new Location(11*40, 7*40), new Image("bricks.png"));
-        map[9][7] = new BrickBlock(new Location(9*40, 7*40), new Image("bricks.png"));
-        map[9][5] = new BrickBlock(new Location(9*40, 5*40), new Image("bricks.png"));
-        map[8][7] = new BrickBlock(new Location(8*40, 7*40), new Image("bricks.png"));
-        map[8][5] = new BrickBlock(new Location(8*40, 5*40), new Image("bricks.png"));
-        map[12][5] = new BrickBlock(new Location(12*40, 5*40), new Image("bricks.png"));
-        map[12][7] = new BrickBlock(new Location(12*40, 7*40), new Image("bricks.png"));
-        eagle = new Eagle(new Location(12*40, 6*40));
-        map[12][6] = eagle;
-        map[3][6] = new SteelBlock(new Location(3*40, 6*40));
-        map[6][12] = new SteelBlock(new Location(6*40, 12*40));
-        map[6][0] = new SteelBlock(new Location(6*40, 0*40));
-
-
-
-          /* 
-          -------------------- END.
-          */
-
-
-
-      
+           /* 
+                  HARDCODING THE WALLS.
+                  */
+                
+                for (int row = 1; row < 5; row ++){
+                  for (int col = 1; col < 5; col = col + 2) {
+                    map[row][col] = new BrickBlock(new Location(row*40, col*40), new Image("bricks.png"));
+                  }
+                }
+        
+                for (int row = 1; row < 5; row ++){
+                  for (int col = 9; col < 13; col = col + 2) {
+                    map[row][col] = new BrickBlock(new Location(row*40, col*40), new Image("bricks.png"));
+                  }
+                }
+        
+                for (int row = 9; row < 12; row ++){
+                  for (int col = 1; col < 5; col = col + 2) {
+                    map[row][col] = new BrickBlock(new Location(row*40, col*40), new Image("bricks.png"));
+                  }
+                }
+        
+                for (int row = 9; row < 12; row ++){
+                  for (int col = 9; col < 13; col = col + 2) {
+                    map[row][col] = new BrickBlock(new Location(row*40, col*40), new Image("bricks.png"));
+                  }
+                }
+        
+                for (int row = 1; row < 4; row ++){
+                  for (int col = 5; col < 9; col = col + 2) {
+                    map[row][col] = new BrickBlock(new Location(row*40, col*40), new Image("bricks.png"));
+                  }
+                }
+        
+                for (int col = 2; col < 11; col++) {
+                    int row = 6;
+                    if (col < 4 || col > 8)
+                    map[row][col] = new BrickBlock(new Location(row*40, col*40), new Image("bricks.png"));
+                }
+                map[5][5] = new BrickBlock(new Location(5*40, 5*40), new Image("bricks.png"));
+                map[5][7] = new BrickBlock(new Location(5*40, 7*40), new Image("bricks.png"));
+                map[11][6] = new BrickBlock(new Location(11*40, 6*40), new Image("bricks.png"));
+                map[11][5] = new BrickBlock(new Location(11*40, 5*40), new Image("bricks.png"));
+                map[11][7] = new BrickBlock(new Location(11*40, 7*40), new Image("bricks.png"));
+                map[9][7] = new BrickBlock(new Location(9*40, 7*40), new Image("bricks.png"));
+                map[9][5] = new BrickBlock(new Location(9*40, 5*40), new Image("bricks.png"));
+                map[8][7] = new BrickBlock(new Location(8*40, 7*40), new Image("bricks.png"));
+                map[8][5] = new BrickBlock(new Location(8*40, 5*40), new Image("bricks.png"));
+                map[12][5] = new BrickBlock(new Location(12*40, 5*40), new Image("bricks.png"));
+                map[12][7] = new BrickBlock(new Location(12*40, 7*40), new Image("bricks.png"));
+                eagle = new Eagle(new Location(12*40, 6*40));
+                map[12][6] = eagle;
+                map[3][6] = new SteelBlock(new Location(3*40, 6*40));
+                map[6][12] = new SteelBlock(new Location(6*40, 12*40));
+                map[6][0] = new SteelBlock(new Location(6*40, 0*40));
+        
+        
+        
+                  /* 
+                  -------------------- END.
+                  */
+        } else if (fet == 2) {
+           /* 
+                  HARDCODING THE WALLS.
+                  */
+                
+        
+                for (int row = 3; row < 13; row = row + 2){
+                  for (int col = 0; col < 13; col++) {
+                    map[row][col] = new BrickBlock(new Location(row*40, col*40), new Image("bricks.png"));
+                  }
+                }
+                eagle = new Eagle(new Location(12*40, 6*40));
+                map[12][6] = eagle;
+        
+                
+                  /* 
+                  -------------------- END.
+                  */
+                } else if (fet == 3) {
+                           for (int row = 3; row < 13; row++){
+                          for (int col = 1; col < 13; col = col + 2) {
+                            map[row][col] = new BrickBlock(new Location(row*40, col*40), new Image("bricks.png"));
+                          }
+                        }
+                        for (int row = 3; row < 12; row++) {
+                          int col = 6;
+                            map[row][col] = new SteelBlock(new Location(row*40, col*40));
+                          }
+                        eagle = new Eagle(new Location(12*40, 6*40));
+                         map[12][6] = eagle;
+                 ////
+                      }
         for (int row = 0; row < 13; row++) { // PRINT MAP.
       		for (int col = 0; col < 13; col++) {
       			map[row][col].iv = new ImageView(map[row][col].image);

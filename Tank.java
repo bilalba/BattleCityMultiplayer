@@ -83,6 +83,7 @@ public class Tank extends BasicBlock{
 	  location.setLocation(rt, ct);
 	  iv.setX(ct);
 	  iv.setY(rt);
+	  info.dir = direction;
 	  info.setinfo(ct,rt);
    }
 }
