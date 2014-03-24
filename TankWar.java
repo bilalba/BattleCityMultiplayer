@@ -20,7 +20,8 @@ import java.io.*;
 import java.rmi.*;
 import java.rmi.server.*;
 import java.rmi.registry.*;
-
+import javafx.scene.text.Text;
+import javafx.scene.text.Font;
  import java.util.ArrayList;
 
 public class TankWar extends Application implements Transfer {
@@ -28,7 +29,7 @@ public class TankWar extends Application implements Transfer {
   // This is the class to execute the game
   Timeline timeline;
   int count = 0;
-  Player player1;
+  // Player1 player1; 
   public int initiate() {
     return 0;
   }
@@ -38,24 +39,8 @@ public class TankWar extends Application implements Transfer {
 
   public void move2(int bcd) throws RemoteException {
     System.out.println("MOVE IT");
-    if (bcd == 10) {
-      if (!player1.missile.ml) {
-                     player1.missile.ml = true;
-                     player1.missile.direction = player1.direction;
-                     player1.missile.location.setLocation(player1.location.getRow()+14,player1.location.getCol()+14);
-                     player1.missile.iv.setRotate((player1.missile.direction) * 90);
-                     player1.missile.makeMove();
-                      player1.missile.makeMove();
-                      player1.missile.makeMove();
-                      player1.missile.makeMove();
-                      }
-    } else {
-          player1.direction = bcd;
-          if (player1.movePossible()) {
-            System.out.println("MUSTMOVE");
-             player1.makeMove();
-          }
-        }
+    Player1 player1 = Data.getData().player1;
+    player1.movex(bcd);
   }
   public int count() {
     return count ++;
@@ -72,6 +57,16 @@ public class TankWar extends Application implements Transfer {
     stage.setTitle("Battle City!");
     stage.setScene(scene);
         stage.show();
+
+        // TEXTT
+        Text t = new Text();
+        t.setFont(new Font(20));
+        t.setText("First row\nSecond row");
+
+
+
+
+        new SoundThread();
         
         
        
@@ -88,7 +83,7 @@ public class TankWar extends Application implements Transfer {
         // DEFINING THE PLAYERS
         
         Player player = Data.getData().player;
-        player1 = Data.getData().player1;
+        Player1 player1 = Data.getData().player1;
         root.getChildren().add(player.iv);
         root.getChildren().add(Data.getData().player1.iv);
         Data.getData().all.get(1).add(player.info);

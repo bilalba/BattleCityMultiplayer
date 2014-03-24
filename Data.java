@@ -9,7 +9,7 @@ public class Data {
 	public BasicBlock[][] map;
 	public ArrayList<Enemy> enem;
 	public Player player;
-  public Player player1;
+  public Player1 player1;
   public Eagle eagle;
 	private static Data aData;
   public int timefreeze = 0;
@@ -121,7 +121,7 @@ public class Data {
         Location loc = new Location(50,0);
         Location loc1 = new Location(0,0);
         player = new Player(loc);
-        player1 =  new Player(loc1);
+        player1 =  new Player1(loc1);
 
         enem = new ArrayList<Enemy>();
 

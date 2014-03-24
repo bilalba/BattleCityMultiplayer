@@ -56,8 +56,8 @@ public class Player extends Tank implements EventHandler<KeyEvent> {
         }
     }
     missile.doAction();
-
   }
+
 	public void handle(KeyEvent event){
 		// KeyEvent event = (KeyEvent) e;
 		if(event.getCode() == KeyCode.UP)
