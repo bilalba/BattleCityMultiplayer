@@ -15,8 +15,8 @@ public class Player extends Tank implements EventHandler<KeyEvent> {
     missile = new Missile(new Location(-40, -40), 1);
     image = new Image("player_left.png"); 
     iv = new ImageView(image);
-    iv.setX(500);
-    iv.setY(500);
+    iv.setX(l.getRow());
+    iv.setY(l.getCol());
     iv.setFitHeight(30);
     iv.setFitWidth(30);
   }
@@ -34,6 +34,9 @@ public class Player extends Tank implements EventHandler<KeyEvent> {
 	 */
 
   public void doAction() {
+    iv.setX(location.getCol());
+    iv.setY(location.getRow());
+    dele = 0;
     if (dele > 0){
       if (dele < 3) {
         iv.setImage(new Image("2.png"));

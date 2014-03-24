@@ -118,10 +118,10 @@ public class Data {
       			map[row][col].iv.setFitWidth(40);
       		}
       	}
-        Location loc = new Location(0,0);
-        Location loc1 = new Location(50,0);
+        Location loc = new Location(50,0);
+        Location loc1 = new Location(0,0);
         player = new Player(loc);
-        player1 new Player(loc1);
+        player1 =  new Player(loc1);
 
         enem = new ArrayList<Enemy>();
 

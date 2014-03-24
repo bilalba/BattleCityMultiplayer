@@ -28,7 +28,7 @@ public class TankWar extends Application implements Transfer {
   // This is the class to execute the game
   Timeline timeline;
   int count = 0;
-  
+  Player player1;
   public int initiate() {
     return 0;
   }
@@ -36,13 +36,26 @@ public class TankWar extends Application implements Transfer {
     return Data.getData().all;
   }
 
-  public void move2(int a) throws RemoteException {
-      Player player1 = Data.getData().player1;
-      player1.direction = a;
-      if (player1.movePossible()) {
-        player1.makeMove();
-      }
-
+  public void move2(int bcd) throws RemoteException {
+    System.out.println("MOVE IT");
+    if (bcd == 10) {
+      if (!player1.missile.ml) {
+                     player1.missile.ml = true;
+                     player1.missile.direction = player1.direction;
+                     player1.missile.location.setLocation(player1.location.getRow()+14,player1.location.getCol()+14);
+                     player1.missile.iv.setRotate((player1.missile.direction) * 90);
+                     player1.missile.makeMove();
+                      player1.missile.makeMove();
+                      player1.missile.makeMove();
+                      player1.missile.makeMove();
+                      }
+    } else {
+          player1.direction = bcd;
+          if (player1.movePossible()) {
+            System.out.println("MUSTMOVE");
+             player1.makeMove();
+          }
+        }
   }
   public int count() {
     return count ++;
@@ -75,10 +88,15 @@ public class TankWar extends Application implements Transfer {
         // DEFINING THE PLAYERS
         
         Player player = Data.getData().player;
+        player1 = Data.getData().player1;
         root.getChildren().add(player.iv);
-        Data.getData().all.get(1).add(player.info); // Transferable.
+        root.getChildren().add(Data.getData().player1.iv);
+        Data.getData().all.get(1).add(player.info);
+        Data.getData().all.get(1).add(player1.info); // Transferable.
         root.getChildren().add(player.missile.iv);
-        Data.getData().all.get(2).add(player.missile.info); // Transferable.
+        root.getChildren().add(player1.missile.iv);
+        Data.getData().all.get(2).add(player.missile.info);
+        Data.getData().all.get(2).add(player1.missile.info); // Transferable.
         stage.addEventHandler(KeyEvent.KEY_PRESSED, player);
         root.getChildren().add(Data.getData().powerup.iv);
         Data.getData().all.get(5).add(Data.getData().powerup.info); // Transferable.
@@ -108,18 +126,19 @@ public class TankWar extends Application implements Transfer {
               player.h_count++;
             }
 
-            if (count()%300 == 0 && Data.getData().powerup.on == false) {
-              System.out.println("NOW EXECUTE");
-              Location loce = new Location(80,240);
-              Enemy xy = new Enemy(loce);
-              ArrayList<Enemy> enem1 = Data.getData().enem;
-              enem1.add(xy);
-              root.getChildren().add(enem1.get(enem1.size()-1).iv);
-              Data.getData().all.get(3).add(enem1.get(enem1.size()-1).info); // Transferable.
-              root.getChildren().add(enem1.get(enem1.size()-1).missile.iv);
-              Data.getData().all.get(4).add(enem1.get(enem1.size()-1).missile.info); // Transferable.
-            }
+            // if (count()%300 == 0 && Data.getData().powerup.on == false) {
+            //   System.out.println("NOW EXECUTE");
+            //   Location loce = new Location(80,240);
+            //   Enemy xy = new Enemy(loce);
+            //   ArrayList<Enemy> enem1 = Data.getData().enem;
+            //   enem1.add(xy);
+            //   root.getChildren().add(enem1.get(enem1.size()-1).iv);
+            //   Data.getData().all.get(3).add(enem1.get(enem1.size()-1).info); // Transferable.
+            //   root.getChildren().add(enem1.get(enem1.size()-1).missile.iv);
+            //   Data.getData().all.get(4).add(enem1.get(enem1.size()-1).missile.info); // Transferable.
+            // }
             player.doAction();
+            player1.doAction();
             
             if (Data.getData().timefreeze(0) != 0) {
               if (Data.getData().timefreeze(0) >= 700) { // CHANGE TIMEFREEZE VALUE HERE.
@@ -135,12 +154,12 @@ public class TankWar extends Application implements Transfer {
                 enem.get(tv).doAction();
               }
             }
-          if (Data.getData().player.killed || Data.getData().eagle.killed) { // STOPP.
-            root.getChildren().add(new ImageView(new Image("gameover.png")));
-            System.out.println("GAMEOVER");
-              timeline.stop();
-           }
-           if (count() > 2000) { // STOPP yo!!
+          // if (Data.getData().player.killed || Data.getData().eagle.killed) { // STOPP.
+          //   root.getChildren().add(new ImageView(new Image("gameover.png")));
+          //   System.out.println("GAMEOVER");
+          //     timeline.stop();
+          //  }
+           if (count() > 200000) { // STOPP yo!!
             root.getChildren().add(new ImageView(new Image("winner.png")));
             System.out.println("GAMEOVER");
               timeline.stop();

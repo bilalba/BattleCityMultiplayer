@@ -60,19 +60,23 @@ public class Tank extends BasicBlock{
 	 return true;
 	}
 
-	protected void makeMove(){
+	public void makeMove(){
 		int rt = 0;
 		int ct = 0;
       if (direction == 1){
+      	System.out.println("abc1");
 	    rt = location.getRow()-2; 
 	    ct = location.getCol();
 	  } else if (direction == -1){
+	  	System.out.println("abc-1");
 	    rt = location.getRow()+2; 
 	    ct = location.getCol();
 	  } else if (direction == 0){
+	  	System.out.println("abc0");
 	    rt = location.getRow(); 
 	    ct = location.getCol()-2;
 	  } else if (direction == 2){
+	  	System.out.println("abc2");
 	    rt = location.getRow(); 
 	    ct = location.getCol()+2;
 	  }

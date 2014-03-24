@@ -83,6 +83,16 @@ ImageView powerup = new ImageView();
 
 	}
 
+	for (Info dv : all.get(1)) {
+		players.add(new ImageView("player_left.png"));
+		ImageView fr = players.get(players.size()-1);
+		fr.setX(dv.x);
+		fr.setY(dv.y);
+		fr.setFitHeight(30);
+		fr.setFitWidth(30);
+		root.getChildren().add(fr);
+	}
+
 	for (ImageView br : enem)
 		root.getChildren().add(br);
 
@@ -124,7 +134,17 @@ ImageView powerup = new ImageView();
 				fr.setX(er.x); // here
 				fr.setY(er.y); // here
 				fr.setRotate((er.dir) * 90);
-			}			
+			}
+
+			ArrayList<Info> p = a1.get(1);
+
+			for (int i = 0; i < 2; i++){ // Here
+				ImageView fr = players.get(i);
+				Info er = p.get(i);
+				fr.setX(er.x); // here
+				fr.setY(er.y); // here
+				fr.setRotate((er.dir) * 90);
+			}	
 
 
 
@@ -137,7 +157,7 @@ ImageView powerup = new ImageView();
 
        EventHandler move = new EventHandler<KeyEvent>() {
            public void handle(KeyEvent event) {
-           		int s = 5;
+           		int s = 0;
               if(event.getCode() == KeyCode.W)
               {
               	s = 1;
@@ -153,6 +173,10 @@ ImageView powerup = new ImageView();
               } else if(event.getCode() == KeyCode.D)
               {
               	s = 2;
+                // circ.setCenterX(circ.getCenterX()+5);
+              } else if(event.getCode() == KeyCode.X)
+              {
+              	s = 10;
                 // circ.setCenterX(circ.getCenterX()+5);
               } else {
                 
