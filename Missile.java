@@ -16,7 +16,7 @@ public class Missile extends BasicBlock {
 		iv.setX(-40);
     	iv.setY(-40);
     	iv.setFitHeight(5);
-    	iv.setFitWidth(4);
+    	iv.setFitWidth(5);
 	}
 
 	protected boolean movePossible() {
@@ -46,14 +46,17 @@ public class Missile extends BasicBlock {
 	  		System.out.println("SSS");
 	  		if (map[rt/40][ct/40].type == 3){
 	  			  		BrickBlock fd = (BrickBlock) map[rt/40][ct/40];
+	  			  		Data.getData().score = Data.getData().score + 10;
 	  			  		fd.impact(0);
 	  			  	} else if (map[rt/40][ct/40].type == 5) {
 	  			  		Eagle fd = (Eagle) map[rt/40][ct/40];
 	  			  		fd.impact(0);
 	  			  	}
 	  	} else if (map[(rt+10)/40][ct/40].location.getCol() != -40) {
-	  		System.out.println("SSS");if (map[rt/40][ct/40].type == 3){
+	  		System.out.println("SSS");
+	  			if (map[rt/40][ct/40].type == 3){
 	  			  		BrickBlock fd = (BrickBlock) map[(rt+10)/40][ct/40];
+	  			  		Data.getData().score = Data.getData().score + 10;
 	  			  		fd.impact(0);
 	  			  	} else if (map[(rt+10)/40][ct/40].type == 5){
 	  			  		Eagle fd = (Eagle) map[(rt+10)/40][ct/40];
@@ -63,6 +66,7 @@ public class Missile extends BasicBlock {
 	  		System.out.println("SSS");
 	 	 		if (map[rt/40][(ct+10)/40].type == 3){
 	  			  		BrickBlock fd = (BrickBlock) map[rt/40][(ct+10)/40];
+	  			  		Data.getData().score = Data.getData().score + 10;
 	  			  		fd.impact(0);
 	  			  	} else if (map[rt/40][(ct+10)/40].type == 5){
 	  			  		Eagle fd = (Eagle) map[rt/40][(ct+10)/40];
@@ -73,6 +77,7 @@ public class Missile extends BasicBlock {
 	  		System.out.println("SSS");
 	  		if (map[(rt+10)/40][(ct+10)/40].type == 3){
 	  			  		BrickBlock fd = (BrickBlock) map[(rt+10)/40][(ct+10)/40];
+	  			  		Data.getData().score = Data.getData().score + 10;
 	  			  		fd.impact(0);
 	  			  	} else if (map[(rt+10)/40][(ct+10)/40].type == 5){
 	  			  		Eagle fd = (Eagle) map[(rt+10)/40][(ct+10)/40];
@@ -88,11 +93,21 @@ public class Missile extends BasicBlock {
 	  	player.impact(2);
 	  	 	return false;
 	  	 }
+	  	 Powerup powerup = Data.getData().powerup;
+	  	 if (iv.intersects(powerup.iv.getBoundsInLocal()) && m_type == 1 && powerup.p_type == 4){ // shoot the powerup.
+	  	powerup.impact(2);
+	  	Data.getData().powerup.avail = false;
+	 	Data.getData().powerup.on = true;
+		Data.getData().powerup.newPowerup(new Location(-40,-40), 0);
+	  	 	return false;
+	  	 }
+
 	 ArrayList<Enemy> enem = Data.getData().enem;
 	 for (int tv = 0; tv < enem.size(); tv++) {
 	 	Enemy dv = enem.get(tv);
 	 	if (iv.intersects(dv.iv.getBoundsInLocal())){
 	 		if (m_type == 1) {
+	 			Data.getData().score = Data.getData().score + 100;
 	 			dv.impact(1);
 	 		}
 	 		return false;

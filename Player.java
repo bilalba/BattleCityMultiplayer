@@ -60,11 +60,18 @@ public class Player extends Tank implements EventHandler<KeyEvent> {
 
 	public void handle(KeyEvent event){
 		// KeyEvent event = (KeyEvent) e;
+    int xt = Data.getData().speedy;
 		if(event.getCode() == KeyCode.UP)
               {
+
                 direction = 1;
               	if (movePossible()) {
                   makeMove();
+                }
+                if (xt > 0) {
+                  if (movePossible()) {
+                    makeMove();
+                  }
                 }
                 System.out.println("Up key pressed");
               } else if(event.getCode() == KeyCode.DOWN)
@@ -73,6 +80,11 @@ public class Player extends Tank implements EventHandler<KeyEvent> {
               	if (movePossible()) {
                   makeMove();
                 }
+                if (xt > 0) {
+                  if (movePossible()) {
+                    makeMove();
+                  }
+                }
                 System.out.println("Down key pressed");
               } else if(event.getCode() == KeyCode.LEFT)
               {
@@ -80,12 +92,22 @@ public class Player extends Tank implements EventHandler<KeyEvent> {
               	if (movePossible()) {
                   makeMove();
                 }
+                if (xt > 0) {
+                  if (movePossible()) {
+                    makeMove();
+                  }
+                }
                 System.out.println("Left key pressed");
               } else if(event.getCode() == KeyCode.RIGHT)
               {
                 direction = 2;
               	if (movePossible()) {
                   makeMove();
+                }
+                if (xt > 0) {
+                  if (movePossible()) {
+                    makeMove();
+                  }
                 }
                 System.out.println("Right key pressed");
               } else if(event.getCode() == KeyCode.Z)

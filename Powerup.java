@@ -27,9 +27,11 @@ public class Powerup extends BasicBlock {
 		if (p_type == 1){
 			image = new Image("grenade.png"); // change this! GRENDADE
 		} else if (p_type == 2){
-			image = new Image("helmet1.png"); // change this!
+			image = new Image("helmet1.png"); // 
 		} else if (p_type == 3){
-			image = new Image("timer.png"); // change this!
+			image = new Image("timer.png"); // 
+		} else if (p_type ==  4) {
+			image = new Image("steel.png"); // change this!
 		}
 		iv.setImage(image);
 		iv.setX(l.getCol());
@@ -49,6 +51,8 @@ public class Powerup extends BasicBlock {
 			Data.getData().player.iv.setImage(new Image("helmet.png"));
 		} else if (p_type == 3) {
 			Data.getData().timefreeze(1);
-		}
+		} else if(p_type == 4){
+				Data.getData().speedy = 1;
+		}	
 	}
 }

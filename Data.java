@@ -13,6 +13,8 @@ public class Data {
   public Eagle eagle;
 	private static Data aData;
   public int timefreeze = 0;
+  public int score = 0;
+  public int speedy = 0;
   public int timefreeze(int f) {
     timefreeze = timefreeze+f;
     return timefreeze;
@@ -20,7 +22,7 @@ public class Data {
   public void makePowerup() {
     if (!powerup.on) {
       Random rand = new Random();
-      int dv = rand.nextInt(3) + 1;
+      int dv = rand.nextInt(4) + 1;
       Random rand1 = new Random();
       int rt = rand1.nextInt(4) + 1;
       Location fr;
@@ -109,6 +111,10 @@ public class Data {
           /* 
           -------------------- END.
           */
+
+
+
+      
         for (int row = 0; row < 13; row++) { // PRINT MAP.
       		for (int col = 0; col < 13; col++) {
       			map[row][col].iv = new ImageView(map[row][col].image);

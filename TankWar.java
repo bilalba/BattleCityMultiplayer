@@ -23,6 +23,7 @@ import java.rmi.registry.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
  import java.util.ArrayList;
+ import javafx.scene.paint.Paint;
 
 public class TankWar extends Application implements Transfer {
   
@@ -59,11 +60,12 @@ public class TankWar extends Application implements Transfer {
         stage.show();
 
         // TEXTT
-        Text t = new Text();
-        t.setFont(new Font(20));
-        t.setText("First row\nSecond row");
+        Text t = new Text(10, 10, "");
+        t.setFill(Color.WHITE);
+        t.setFont(new Font(10));
+        t.setText("SCORE");
 
-
+        
 
 
         new SoundThread();
@@ -85,7 +87,6 @@ public class TankWar extends Application implements Transfer {
         Player player = Data.getData().player;
         Player1 player1 = Data.getData().player1;
         root.getChildren().add(player.iv);
-        root.getChildren().add(Data.getData().player1.iv);
         Data.getData().all.get(1).add(player.info);
         Data.getData().all.get(1).add(player1.info); // Transferable.
         root.getChildren().add(player.missile.iv);
@@ -105,11 +106,18 @@ public class TankWar extends Application implements Transfer {
           root.getChildren().add(enem.get(tv).missile.iv);
           Data.getData().all.get(4).add(enem.get(tv).missile.info);; // Transferable.
         }
+
+        root.getChildren().add(Data.getData().player1.iv);
+        root.getChildren().add(t);
         final Duration oneFrameAmt = Duration.millis(1500/60);
         final KeyFrame oneFrame = new KeyFrame(oneFrameAmt, // MAIN HANDLE.
         new EventHandler<ActionEvent>() {
 
           public void handle(ActionEvent event) {
+            // player1.iv.setX(player1.iv.getX());
+
+
+            t.setText("SCORE:" + Data.getData().score);
 
             if (player.helmet) {
               if (player.h_count >= 700) { // CHANGE HELMET.
@@ -148,6 +156,11 @@ public class TankWar extends Application implements Transfer {
               for (int tv = 0; tv < enem.size(); tv++) {
                 enem.get(tv).doAction();
               }
+            }
+            if (Data.getData().speedy > 0){
+              Data.getData().speedy++;
+                 if (Data.getData().speedy > 1000)
+                Data.getData().speedy = 0;
             }
           // if (Data.getData().player.killed || Data.getData().eagle.killed) { // STOPP.
           //   root.getChildren().add(new ImageView(new Image("gameover.png")));
