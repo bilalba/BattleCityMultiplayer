@@ -15,10 +15,11 @@ import java.rmi.*;
 import java.rmi.registry.*;
 import javafx.scene.paint.Color;
 import javafx.scene.image.ImageView;
-import java.util.ArrayList;
+import java.util.*;
 
 public class ClientTankWar extends Application {
 	Timeline timeline;
+	Transfer transfer;
 ArrayList<ImageView> bricks = new ArrayList<ImageView>();
 ArrayList<ImageView> players = new ArrayList<ImageView>();
 ArrayList<ImageView> players_miss = new ArrayList<ImageView>();
@@ -29,14 +30,13 @@ public ArrayList<ImageView> getenem() {
 public void setenem(ArrayList<ImageView> a) {
 	enem = a;
 }
+
 ArrayList<ImageView> enem_miss = new ArrayList<ImageView>();
 ImageView powerup = new ImageView();
 
 	public void start(Stage stage) throws Exception{
+	
 		System.out.println("New1");
-    	Registry registry = LocateRegistry.getRegistry();
-		Transfer transfer = (Transfer) registry.lookup("transfer");
-		transfer.initiate();
     final Group root = new Group();
     final Scene scene = new Scene(root, 520, 520);
 	scene.setFill(Color.BLACK);
@@ -190,8 +190,6 @@ ImageView powerup = new ImageView();
         stage.getScene().setOnKeyPressed(move);
 }
 	public static void main(String[] args) throws Exception{
-       	
-
 		Application.launch(args);
 	}
 }

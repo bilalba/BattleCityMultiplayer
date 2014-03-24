@@ -24,14 +24,19 @@ import javafx.scene.text.Text;
 import javafx.scene.text.Font;
  import java.util.ArrayList;
  import javafx.scene.paint.Paint;
-
+import javafx.scene.control.*;
 public class TankWar extends Application implements Transfer {
-  
-  // This is the class to execute the game
-  Timeline timeline;
-  int count = 0;
-  // Player1 player1; 
-  public int initiate() {
+    Timeline timeline;
+    Transfer transfer;
+    ArrayList<ImageView> bricks = new ArrayList<ImageView>();
+    ArrayList<ImageView> players = new ArrayList<ImageView>();
+    ArrayList<ImageView> players_miss = new ArrayList<ImageView>();
+    ArrayList<ImageView> enem = new ArrayList<ImageView>();
+    int count = 0;
+    int started = 0;
+
+     public int initiate() {
+    started = 1;
     return 0;
   }
   public ArrayList<ArrayList<Info>> getit() throws RemoteException {
@@ -46,11 +51,167 @@ public class TankWar extends Application implements Transfer {
   public int count() {
     return count ++;
   }
+ 
+    public static void main(String[] args) {
+        launch(args);
+    }
 
-  public void start(Stage stage) throws Exception{
-    Transfer transfer=(Transfer)UnicastRemoteObject.exportObject(this,0);
+    @Override
+    public void start(Stage stage) {
+        TankWar fd = this;
+        final Group root = new Group();
+    final Scene scene = new Scene(root, 520, 520);
+     scene.setFill(Color.BLACK);
+     stage.setTitle("Battle City!");
+      stage.setScene(scene);
+        stage.show();
+
+
+
+       
+        TextField userTextField = new TextField();
+        // hbox1.getChildren().add(userTextField);
+
+
+
+        Button button2 = new Button("GO SOLO!");
+        button2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                // label.setText("GO SOLO!");
+           
+    final Group root = new Group();
+    final Scene scene = new Scene(root, 520, 520);
+     scene.setFill(Color.BLACK);
+    stage.setTitle("Battle City!");
+    stage.setScene(scene);
+        stage.show();
+
+        // TEXTT
+        Text t = new Text(10, 10, "");
+        t.setFill(Color.WHITE);
+        t.setFont(new Font(10));
+        t.setText("SCORE");
+
+        
+
+
+        new SoundThread();
+        
+        
+       
+
+        BasicBlock[][] maps = Data.getData().map;
+        
+        for (int row = 0; row < 13; row++) { // ADD TO ROOT.
+          for (int col = 0; col < 13; col++) {
+            root.getChildren().add(maps[row][col].iv);
+          }
+        }
+
+        // DEFINING THE PLAYERS
+        
+        Player player = Data.getData().player;
+        root.getChildren().add(player.iv);
+        root.getChildren().add(player.missile.iv);
+        stage.addEventHandler(KeyEvent.KEY_PRESSED, player);
+        root.getChildren().add(Data.getData().powerup.iv);
+        // ------------- END.
+
+        // DEFINING ENEMIES ---------------
+        ArrayList<Enemy> enem = Data.getData().enem;
+        for (int tv = 0; tv < enem.size(); tv++){
+          root.getChildren().add(enem.get(tv).iv); // Transferable.
+          root.getChildren().add(enem.get(tv).missile.iv); // Transferable.
+        }
+
+        root.getChildren().add(t);
+        final Duration oneFrameAmt = Duration.millis(1500/60);
+        final KeyFrame oneFrame = new KeyFrame(oneFrameAmt, // MAIN HANDLE.
+        new EventHandler<ActionEvent>() {
+
+          public void handle(ActionEvent event) {
+            // player1.iv.setX(player1.iv.getX());
+
+
+            t.setText("SCORE:" + Data.getData().score);
+
+            if (player.helmet) {
+              if (player.h_count >= 700) { // CHANGE HELMET.
+                player.iv.setImage(new Image("player_left.png"));
+                player.h_count = 0;
+                Data.getData().powerup.on = false;
+                player.helmet = false;
+              }
+              player.h_count++;
+            }
+
+            // if (count()%300 == 0 && Data.getData().powerup.on == false) {
+            //   System.out.println("NOW EXECUTE");
+            //   Location loce = new Location(80,240);
+            //   Enemy xy = new Enemy(loce);
+            //   ArrayList<Enemy> enem1 = Data.getData().enem;
+            //   enem1.add(xy);
+            //   root.getChildren().add(enem1.get(enem1.size()-1).iv);
+            //   Data.getData().all.get(3).add(enem1.get(enem1.size()-1).info); // Transferable.
+            //   root.getChildren().add(enem1.get(enem1.size()-1).missile.iv);
+            //   Data.getData().all.get(4).add(enem1.get(enem1.size()-1).missile.info); // Transferable.
+            // }
+            player.doAction();
+            
+            if (Data.getData().timefreeze(0) != 0) {
+              if (Data.getData().timefreeze(0) >= 700) { // CHANGE TIMEFREEZE VALUE HERE.
+                Data.getData().powerup.on = false;
+                Data.getData().timefreeze= 0;
+                System.out.println("THIS SHOULD BE ZERO" + Data.getData().timefreeze(0));
+              } else {
+                System.out.println(Data.getData().timefreeze(1));
+              }
+            } else {
+
+              for (int tv = 0; tv < enem.size(); tv++) {
+                enem.get(tv).doAction();
+              }
+            }
+            if (Data.getData().speedy > 0){
+              Data.getData().speedy++;
+                 if (Data.getData().speedy > 1000)
+                Data.getData().speedy = 0;
+            }
+          // if (Data.getData().player.killed || Data.getData().eagle.killed) { // STOPP.
+          //   root.getChildren().add(new ImageView(new Image("gameover.png")));
+          //   System.out.println("GAMEOVER");
+          //     timeline.stop();
+          //  }
+           if (count() > 200000) { // STOPP yo!!
+            root.getChildren().add(new ImageView(new Image("winner.png")));
+            System.out.println("GAMEOVER");
+              timeline.stop();
+           }
+           if (new Random().nextInt() > 0 && count()%350 == 0 && Data.getData().powerup.avail == false) { // half probability 
+            System.out.println("executing probability");
+                Data.getData().makePowerup();
+           }
+          }
+        });
+
+      timeline = new Timeline(oneFrame);
+       timeline.setCycleCount(Timeline.INDEFINITE);
+       timeline.play();
+
+            }
+        });
+        Button button3 = new Button("Start a new game!");
+        button3.relocate(250,250);
+        button3.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                  // label.setText("GO SOLO!");
+              try {
+                              Transfer transfer=(Transfer)UnicastRemoteObject.exportObject(fd,0);
+
     Registry registry=LocateRegistry.getRegistry();
-    registry.rebind("transfer",transfer);
+    registry.rebind("rmi://localhost/transfer",transfer);
+    }
+                            catch (Exception e1) {}
     System.out.println("Done");
     final Group root = new Group();
     final Scene scene = new Scene(root, 520, 520);
@@ -183,15 +344,184 @@ public class TankWar extends Application implements Transfer {
        timeline.setCycleCount(Timeline.INDEFINITE);
        timeline.play();
 
+                 // label.setText("Start a game!");
+            }
+        });
+
+        Button button4 = new Button("Join a already running game!");
+                button4.relocate(50,50);
+        button4.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) { 
+              try {
+                              Registry registry = LocateRegistry.getRegistry();
+                              transfer = (Transfer) registry.lookup("rmi://" + "localhost" + "/transfer");
+                              transfer.initiate();
+                               } catch (Exception e1) {}
+                               System.out.println("New1");
+                final Group root = new Group();
+                final Scene scene = new Scene(root, 520, 520);
+                scene.setFill(Color.BLACK);
+                stage.setTitle("Battle City!");
+                stage.setScene(scene);
+                stage.show();
+                ArrayList<ArrayList<Info>> all = new ArrayList<ArrayList<Info>>();
+                try{
+                                all = transfer.getit();
+                                } catch (Exception e1) {}
+
+                for (Info dv : all.get(0)) { // INITIALIZE.
+                    System.out.println(dv.type);
+                    if (dv.type == 15){
+                        bricks.add(new ImageView("bricks.png"));
+                        bricks.get(bricks.size()-1).setX(dv.x);
+                        bricks.get(bricks.size()-1).setY(dv.y);
+                    }else if (dv.type == 17){
+                        bricks.add(new ImageView("steel.png"));
+                        bricks.get(bricks.size()-1).setX(dv.x);
+                        bricks.get(bricks.size()-1).setY(dv.y);
+                    }else if (dv.type == 16){
+                        bricks.add(new ImageView("eagless.png"));
+                        bricks.get(bricks.size()-1).setX(dv.x);
+                        bricks.get(bricks.size()-1).setY(dv.y);
+                    } else {
+                        bricks.add(new ImageView("eagless.png"));
+                        bricks.get(bricks.size()-1).setX(dv.x);
+                        bricks.get(bricks.size()-1).setY(dv.y);
+                    }
+                }
+
+                for (ImageView br : bricks)
+                    root.getChildren().add(br);
 
 
-  }
+                for (Info dv : all.get(3)) {
+                    enem.add(new ImageView("enemy_left.png"));
+                    ImageView fr = enem.get(enem.size()-1);
+                    fr.setX(dv.x);
+                    fr.setY(dv.y);
+                    fr.setFitHeight(30);
+                    fr.setFitWidth(30);
+
+                }
+
+                for (Info dv : all.get(1)) {
+                    players.add(new ImageView("player_left.png"));
+                    ImageView fr = players.get(players.size()-1);
+                    fr.setX(dv.x);
+                    fr.setY(dv.y);
+                    fr.setFitHeight(30);
+                    fr.setFitWidth(30);
+                    root.getChildren().add(fr);
+                }
+
+                for (ImageView br : enem)
+                    root.getChildren().add(br);
+
+                // for (ImageView x :statics) { 
+                //  root.getChildren().add(x);
+                // }
+                final Duration oneFrameAmt = Duration.millis(1500/60);
+                final KeyFrame oneFrame = new KeyFrame(oneFrameAmt, // MAIN HANDLE.
+                new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent event) {
+                        // System.out.println('s');
+                        ArrayList<ArrayList<Info>> a1 = new ArrayList<ArrayList<Info>>();
+                        try {
+                            a1 = transfer.getit();
+                        } catch(Exception e) {}
 
 
-  public static void main(String[] args) {
-    
-    Application.launch(args); //to launch the startMethod
+                        ArrayList<Info> h= a1.get(0); // UPDATING STATIC OBJECTS.
+                        for (int i = 0; i < h.size(); i++){ // Here
+                            bricks.get(i).setX(h.get(i).x); // here
+                            bricks.get(i).setY(h.get(i).y); // here
+                        } // here
 
-  }
+                        ArrayList<Info> e = a1.get(3); // ENEMIES.
+                        if (e.size() > enem.size()) { // ADD ADDITIONAL ENEMIES CODE.
+                            for (int i = enem.size(); i < e.size(); i++) {
+                                enem.add(new ImageView("enemy_left.png"));
+                                ImageView fr = enem.get(i);
+                                fr.setX(e.get(i).x);
+                                fr.setY(e.get(i).y);
+                                fr.setFitHeight(30);
+                                fr.setFitWidth(30);
+                                root.getChildren().add(fr);
+                            }
+                        }
+                        for (int i = 0; i < e.size(); i++){ // Here
+                            ImageView fr = enem.get(i);
+                            Info er = e.get(i);
+                            fr.setX(er.x); // here
+                            fr.setY(er.y); // here
+                            fr.setRotate((er.dir) * 90);
+                        }
 
+                        ArrayList<Info> p = a1.get(1);
+
+                        for (int i = 0; i < 2; i++){ // Here
+                            ImageView fr = players.get(i);
+                            Info er = p.get(i);
+                            fr.setX(er.x); // here
+                            fr.setY(er.y); // here
+                            fr.setRotate((er.dir) * 90);
+                        }   
+
+
+
+                    }
+                });
+
+                timeline = new Timeline(oneFrame);
+                   timeline.setCycleCount(Timeline.INDEFINITE);
+                   timeline.play();
+
+                   EventHandler move = new EventHandler<KeyEvent>() {
+                       public void handle(KeyEvent event) {
+                            int s = 0;
+                          if(event.getCode() == KeyCode.W)
+                          {
+                            s = 1;
+                            // circ.setCenterY(circ.getCenterY()-5);
+                          } else if(event.getCode() == KeyCode.S)
+                          {
+                            s = -1;
+                            // circ.setCenterY(circ.getCenterY()+5);
+                          } else if(event.getCode() == KeyCode.A)
+                          {
+                            s = 0;
+                            // circ.setCenterX(circ.getCenterX()-5);
+                          } else if(event.getCode() == KeyCode.D)
+                          {
+                            s = 2;
+                            // circ.setCenterX(circ.getCenterX()+5);
+                          } else if(event.getCode() == KeyCode.X)
+                          {
+                            s = 10;
+                            // circ.setCenterX(circ.getCenterX()+5);
+                          } else {
+                            
+                            System.out.println("Invalid Key");
+                          }
+                          try {
+                                transfer.move2(s);
+                            } catch(Exception e) {}
+                       }
+                    };
+                    stage.getScene().setOnKeyPressed(move);
+                        }
+                    });
+
+        root.getChildren().add(button2);
+        root.getChildren().add(button3);
+        root.getChildren().add(button4);
+
+
+  
+
+        // vbox.getChildren().add(button1);
+     
+
+
+    }
 }
