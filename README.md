@@ -1,3 +1,2 @@
-This is an implementation of the game Battle City(http://en.wikipedia.org/wiki/Battle_City_(video_game)) in Java and JavaFX.
-
+BattleCity converted into a 2 player game using RMI. Original single player exists at https://github.com/bilalba/BattleCity
 Main File : TankWar.java
