@@ -31,7 +31,7 @@ public class Powerup extends BasicBlock {
 		} else if (p_type == 3){
 			image = new Image("timer.png"); // 
 		} else if (p_type ==  4) {
-			image = new Image("steel.png"); // change this!
+			image = new Image("nfs.png"); // change this!
 		}
 		iv.setImage(image);
 		iv.setX(l.getCol());

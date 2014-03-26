@@ -240,6 +240,7 @@ public class TankWar extends Application implements Transfer {
         Player player = Data.getData().player;
         Player1 player1 = Data.getData().player1;
         root.getChildren().add(player.iv);
+        root.getChildren().add(player1.iv);  // ADDING IT HERE YET A ERROR COMES.
         Data.getData().all.get(1).add(player.info);
         Data.getData().all.get(1).add(player1.info); // Transferable.
         root.getChildren().add(player.missile.iv);
@@ -260,7 +261,6 @@ public class TankWar extends Application implements Transfer {
           Data.getData().all.get(4).add(enem.get(tv).missile.info);; // Transferable.
         }
 
-        root.getChildren().add(Data.getData().player1.iv);
         root.getChildren().add(t);
         Text t1 = new Text(100, 100, "WAITING...");
             t1.setFill(Color.WHITE);
@@ -278,7 +278,9 @@ public class TankWar extends Application implements Transfer {
             } else {
               t1.relocate(-50,-50);
             }
-            // t1.relocate(-100,-100);
+            
+
+
             // player1.iv.setX(player1.iv.getX());
 
 
